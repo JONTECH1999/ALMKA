@@ -1,0 +1,49 @@
+{
+  "configurations": [
+    {
+      "name": "ESP32",
+      "compilerPath": "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp-x32/2511/bin/xtensa-esp-elf-gcc.exe",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/hardware/esp32/3.3.7/cores/esp32",
+        "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/hardware/esp32/3.3.7/variants/esp32",
+        "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/hardware/esp32/3.3.7/libraries/WiFi/src",
+        "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/espressif__esp32-camera/driver/include",
+        "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/esp_http_server/include",
+        "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/esp_timer/include",
+        "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/fb_gfx/include",
+        "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/esp_common/include",
+        "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/soc/esp32/include",
+        "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/dio_qspi/include",
+        "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/qio_qspi/include",
+        "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/newlib/platform_include"
+      ],
+      "browse": {
+        "path": [
+          "${workspaceFolder}/**",
+          "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/hardware/esp32/3.3.7/cores/esp32",
+          "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/hardware/esp32/3.3.7/variants/esp32",
+          "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/hardware/esp32/3.3.7/libraries/WiFi/src",
+          "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/espressif__esp32-camera/driver/include",
+          "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/esp_http_server/include",
+          "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/esp_timer/include",
+          "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/fb_gfx/include",
+          "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/esp_common/include",
+          "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/soc/esp32/include",
+          "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/dio_qspi/include",
+          "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/qio_qspi/include",
+          "C:/Users/aljon/AppData/Local/Arduino15/packages/esp32/tools/esp32-libs/3.3.7/include/newlib/platform_include"
+        ]
+      },
+      "defines": [
+        "ARDUINO=10805",
+        "ESP32",
+        "F_CPU=240000000L"
+      ],
+      "intelliSenseMode": "windows-gcc-x64",
+      "cStandard": "c11",
+      "cppStandard": "c++17"
+    }
+  ],
+  "version": 4
+}
