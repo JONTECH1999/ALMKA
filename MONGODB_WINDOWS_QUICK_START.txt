@@ -1,0 +1,292 @@
+@echo off
+REM MongoDB Migration Quick Start for Windows - ALMKA Blind
+REM MySQL to MongoDB Migration
+
+echo.
+echo ========================================
+echo ALMKA - MySQL to MongoDB Migration
+echo ========================================
+echo.
+
+echo STEP 1: Install MongoDB Community Server
+echo ========================================
+echo.
+echo 1. Go to: https://www.mongodb.com/try/download/community
+echo 2. Download MongoDB Windows MSI installer
+echo 3. Run installer and follow prompts:
+echo    - Choose "Complete" installation
+echo    - CHECK "Install MongoDB as a Service"
+echo    - CHECK "Run MongoDB service"
+echo 4. MongoDB starts automatically
+echo.
+echo Verify MongoDB is running (in PowerShell as Admin):
+echo    Get-Service MongoDB
+echo    Should show: Status=Running
+echo.
+echo.
+
+echo STEP 2: Install MongoDB Compass (Optional)
+echo ========================================
+echo.
+echo MongoDB Compass is a GUI to view your database
+echo Downloaded with MongoDB installer
+echo Launch from Start Menu: MongoDB Compass
+echo.
+
+echo.
+echo STEP 3: Update Your Project
+echo ========================================
+echo.
+echo Open PowerShell and run:
+echo.
+echo   cd C:\xampp\htdocs\ALMKA_Blind
+echo.
+echo   # Install MongoDB driver for Laravel
+echo   composer require jenssegers/mongodb
+echo.
+echo   # This takes 1-2 minutes...
+echo.
+
+echo.
+echo STEP 4: Update .env File
+echo ========================================
+echo.
+echo Edit: C:\xampp\htdocs\ALMKA_Blind\.env
+echo.
+echo Change these lines:
+echo.
+echo   FROM:
+echo   DB_CONNECTION=mysql
+echo   DB_HOST=127.0.0.1
+echo   DB_PORT=3306
+echo   DB_DATABASE=almka_blind
+echo   DB_USERNAME=root
+echo.
+echo   TO:
+echo   DB_CONNECTION=mongodb
+echo   DB_HOST=127.0.0.1
+echo   DB_PORT=27017
+echo   DB_DATABASE=almka_blind
+echo   DB_USERNAME=
+echo   DB_PASSWORD=
+echo.
+echo.
+
+echo STEP 5: Update Your Models
+echo ========================================
+echo.
+echo For EACH model file (User.php, LocationHistory.php, etc.):
+echo.
+echo 1. Open file: app/Models/User.php
+echo.
+echo 2. Replace the top of the file:
+echo.
+echo   FROM:
+echo   use Illuminate\Database\Eloquent\Model;
+echo.
+echo   TO:
+echo   use MongoDB\Laravel\Eloquent\Model;
+echo.
+echo 3. Add inside the class:
+echo   protected $connection = 'mongodb';
+echo   protected $collection = 'users';
+echo.
+echo Do this for ALL models:
+echo   - app/Models/User.php
+echo   - app/Models/LocationHistory.php
+echo   - app/Models/VideoRecording.php
+echo   - app/Models/SensorReading.php
+echo   - app/Models/DeviceSession.php
+echo.
+echo.
+
+echo STEP 6: Create MongoDB Migration
+echo ========================================
+echo.
+echo In PowerShell:
+echo.
+echo   cd C:\xampp\htdocs\ALMKA_Blind
+echo   php artisan make:migration create_mongodb_collections
+echo.
+echo Then edit the new file in:
+echo   database/migrations/
+echo.
+echo (See MONGODB_MIGRATION_GUIDE.md - PART 4 for full code)
+echo.
+echo.
+
+echo STEP 7: Run Migrations
+echo ========================================
+echo.
+echo In PowerShell:
+echo.
+echo   php artisan migrate
+echo.
+echo Should show:
+echo   Migration table created successfully.
+echo   [OK] Migrations ran successfully!
+echo.
+echo.
+
+echo STEP 8: Test Local MongoDB
+echo ========================================
+echo.
+echo In PowerShell:
+echo.
+echo   # Start Laravel
+echo   php artisan serve
+echo.
+echo In another PowerShell:
+echo.
+echo   # Start Vite
+echo   npm run dev
+echo.
+echo Then visit: http://localhost:8000
+echo.
+echo You should see ALMKA login page!
+echo.
+echo.
+
+echo STEP 9: Verify Data in MongoDB
+echo ========================================
+echo.
+echo 1. Open: MongoDB Compass
+echo    (Installed with MongoDB)
+echo.
+echo 2. Click "Connect"
+echo    (Should connect to localhost:27017)
+echo.
+echo 3. Look at "almka_blind" database
+echo.
+echo 4. Expand and see collections:
+echo    - users
+echo    - location_histories
+echo    - video_recordings
+echo    - sensor_readings
+echo.
+echo 5. Click each collection to see data
+echo.
+echo.
+
+echo STEP 10: Migrate Data from MySQL (If Needed)
+echo ========================================
+echo.
+echo Only if you have existing MySQL data to migrate:
+echo.
+echo In PowerShell:
+echo.
+echo   php artisan tinker
+echo.
+echo Then copy-paste from MONGODB_MIGRATION_GUIDE.md - PART 8
+echo.
+echo.
+
+echo STEP 11: Commit to Git
+echo ========================================
+echo.
+echo In PowerShell:
+echo.
+echo   cd C:\xampp\htdocs\ALMKA_Blind
+echo   git add .
+echo   git commit -m "Migrate from MySQL to MongoDB"
+echo   git push origin main
+echo.
+echo.
+
+echo STEP 12: Deploy to Render with MongoDB Atlas
+echo ========================================
+echo.
+echo 1. Go to: https://www.mongodb.com/cloud/atlas
+echo 2. Create free account
+echo 3. Create free cluster
+echo 4. Create database user: almka_user
+echo 5. Get connection string
+echo 6. Copy credentials
+echo.
+echo Then on Render:
+echo 1. Go to your Web Service
+echo 2. Click "Environment"
+echo 3. Add MongoDB variables:
+echo    DB_CONNECTION=mongodb
+echo    DB_HOST=[YOUR_ATLAS_HOST]
+echo    DB_PORT=27017
+echo    DB_DATABASE=almka_blind
+echo    DB_USERNAME=almka_user
+echo    DB_PASSWORD=[YOUR_PASSWORD]
+echo.
+echo 4. Deploy!
+echo.
+echo.
+
+echo ========================================
+echo TROUBLESHOOTING
+echo ========================================
+echo.
+echo ERROR: "MongoDB service not running"
+echo SOLUTION: Start-Service MongoDB
+echo.
+echo ERROR: "Cannot connect to MongoDB"
+echo SOLUTION: 
+echo   - Check service: Get-Service MongoDB
+echo   - Try mongosh in PowerShell
+echo   - Restart Windows if needed
+echo.
+echo ERROR: "Model not using MongoDB"
+echo SOLUTION:
+echo   - Add: use MongoDB\Laravel\Eloquent\Model;
+echo   - Add: protected $connection = 'mongodb';
+echo   - Add: protected $collection = 'collection_name';
+echo.
+echo ERROR: "Migration fails"
+echo SOLUTION:
+echo   - Check: php artisan migrate:status
+echo   - Clear: php artisan cache:clear
+echo   - Try: php artisan migrate:refresh
+echo.
+echo.
+
+echo ========================================
+echo QUICK COMMAND REFERENCE
+echo ========================================
+echo.
+echo cd C:\xampp\htdocs\ALMKA_Blind
+echo.
+echo # Check MongoDB running
+echo Get-Service MongoDB
+echo.
+echo # Start Laravel dev server
+echo php artisan serve
+echo.
+echo # Start Vite (in another terminal)
+echo npm run dev
+echo.
+echo # Test MongoDB
+echo php artisan tinker
+echo ^>^> DB::connection('mongodb').collection('users').count()
+echo.
+echo # Run migrations
+echo php artisan migrate
+echo.
+echo # Rollback migrations
+echo php artisan migrate:rollback
+echo.
+echo # Clear all data
+echo php artisan migrate:refresh
+echo.
+echo.
+
+echo ========================================
+echo MIGRATION COMPLETE! 
+echo ========================================
+echo.
+echo Your project is now using MongoDB!
+echo.
+echo Next steps:
+echo 1. Test locally at http://localhost:8000
+echo 2. Check data in MongoDB Compass
+echo 3. Commit to GitHub
+echo 4. Deploy to Render with MongoDB Atlas
+echo.
+echo For detailed info: Read MONGODB_MIGRATION_GUIDE.md
+echo For config examples: Read MONGODB_CONFIG_REFERENCE.md
+echo.
