@@ -1,0 +1,238 @@
+@echo off
+REM ALMKA Blind - Render Deployment Quick Start (Windows)
+REM Copy and paste commands below one by one into your PowerShell terminal
+REM Location: C:\xampp\htdocs\ALMKA_Blind
+
+echo.
+echo ========================================
+echo ALMKA Render Deployment - Windows Guide
+echo ========================================
+echo.
+echo STEP 1: Check Current Status
+echo ========================================
+echo.
+echo Run this in PowerShell at: C:\xampp\htdocs\ALMKA_Blind
+echo.
+echo    git status
+echo.
+echo.
+echo STEP 2: Commit All Changes
+echo ========================================
+echo.
+echo    git add .
+echo    git commit -m "Prepare for Render deployment"
+echo    git push origin main
+echo.
+echo.
+echo STEP 3: Optimize for Production
+echo ========================================
+echo.
+echo    php artisan config:cache
+echo    php artisan route:cache
+echo    php artisan view:cache
+echo    npm run build
+echo.
+echo.
+echo STEP 4: Commit Optimizations
+echo ========================================
+echo.
+echo    git add .
+echo    git commit -m "Production optimization"
+echo    git push origin main
+echo.
+echo.
+echo STEP 5: Go to https://render.com
+echo ========================================
+echo.
+echo 1. Click "New"
+echo 2. Click "Web Service"
+echo 3. Click "Connect a Repository"
+echo 4. Select "almka-blind"
+echo 5. Click "Connect"
+echo.
+echo.
+echo STEP 6: Configure Web Service
+echo ========================================
+echo.
+echo Settings:
+echo   Name:            almka-blind
+echo   Environment:     PHP
+echo   Plan:            Free
+echo.
+echo Build Command:
+echo   composer install --no-dev ^&^& npm install ^&^& npm run build
+echo.
+echo Start Command:
+echo   php artisan migrate --force ^&^& php artisan storage:link ^&^& php artisan serve --host 0.0.0.0 --port $PORT
+echo.
+echo.
+echo STEP 7: Create PostgreSQL Database
+echo ========================================
+echo.
+echo 1. From Render dashboard, click "New"
+echo 2. Click "PostgreSQL"
+echo 3. Settings:
+echo    Name:               almka-blind-db
+echo    Database Name:      almka_blind
+echo    User:               almka_user
+echo    PostgreSQL Version: 15
+echo    Plan:               Free
+echo 4. Click "Create Database"
+echo 5. Wait ~1 minute...
+echo 6. Copy database credentials
+echo.
+echo.
+echo STEP 8: Generate APP_KEY
+echo ========================================
+echo.
+echo Run in PowerShell:
+echo.
+echo    php artisan key:generate --show
+echo.
+echo Copy the output (example: base64:AbCdEf...)
+echo.
+echo.
+echo STEP 9: Add Environment Variables
+echo ========================================
+echo.
+echo In Render Web Service dashboard:
+echo 1. Click "Environment" tab
+echo 2. Add each variable:
+echo.
+echo    APP_NAME=ALMKA
+echo    APP_ENV=production
+echo    APP_DEBUG=false
+echo    APP_KEY=base64:[PASTE_YOUR_KEY_HERE]
+echo    APP_URL=https://almka-blind.onrender.com
+echo    LOG_CHANNEL=stack
+echo    LOG_LEVEL=debug
+echo    DB_CONNECTION=pgsql
+echo    DB_HOST=[PASTE_DATABASE_HOST]
+echo    DB_PORT=5432
+echo    DB_DATABASE=almka_blind
+echo    DB_USERNAME=[PASTE_DATABASE_USER]
+echo    DB_PASSWORD=[PASTE_DATABASE_PASSWORD]
+echo    CACHE_STORE=database
+echo    QUEUE_CONNECTION=database
+echo    SESSION_DRIVER=database
+echo    FILESYSTEM_DISK=local
+echo    VITE_API_BASE_URL=/api
+echo.
+echo.
+echo STEP 10: Wait for Deployment
+echo ========================================
+echo.
+echo Render builds automatically when you connect the repo.
+echo Status will change: Building → Live
+echo This takes 2-5 minutes.
+echo.
+echo.
+echo STEP 11: Test Your App
+echo ========================================
+echo.
+echo Open browser:
+echo   https://almka-blind.onrender.com
+echo.
+echo You should see:
+echo   ✓ ALMKA login page loads
+echo   ✓ No 500 errors
+echo   ✓ Page styled correctly
+echo   ✓ Database works
+echo.
+echo.
+echo STEP 12: Enable GitHub Auto-Deploy
+echo ========================================
+echo.
+echo 1. In Render, click Web Service
+echo 2. Click "Settings"
+echo 3. Find "Deploy Hook"
+echo 4. Copy URL
+echo 5. Go to GitHub: https://github.com/alonzoaljon-dev/almka-blind
+echo 6. Click "Settings" → "Webhooks" → "Add webhook"
+echo 7. Paste URL
+echo 8. Content type: application/json
+echo 9. Click "Add webhook"
+echo.
+echo Done! Now every git push automatically deploys!
+echo.
+echo.
+echo TROUBLESHOOTING - If Build Fails
+echo ========================================
+echo.
+echo Click "Logs" in Render to see error messages.
+echo.
+echo Common Errors:
+echo.
+echo   "npm not found"
+echo   → Make sure package.json exists in project root
+echo.
+echo   "composer not found"
+echo   → Make sure composer.json exists in project root
+echo.
+echo   "Killed"
+echo   → Free tier ran out of memory, try smaller npm bundle
+echo.
+echo   "Database error"
+echo   → Check DB_HOST, DB_USERNAME, DB_PASSWORD are correct
+echo.
+echo.
+echo TROUBLESHOOTING - If App Shows Blank Page
+echo ========================================
+echo.
+echo 1. Open browser, press F12 for Developer Tools
+echo 2. Click "Console" tab, look for red errors
+echo 3. Click "Network" tab, look for failed requests
+echo 4. In Render, click "Logs" to see server errors
+echo.
+echo Common Issues:
+echo.
+echo   "SyntaxError in React"
+echo   → npm run build may have failed, check Render logs
+echo.
+echo   "404 on /api/..."
+echo   → Check API routes are correct in routes/api.php
+echo.
+echo   "Blank page after login"
+echo   → Check database migrations ran successfully
+echo.
+echo   "CSRF token error"
+echo   → Make sure Inertia middleware installed correctly
+echo.
+echo.
+echo QUICK COMMANDS FOR RENDER SHELL
+echo ========================================
+echo.
+echo Access Render Shell from Web Service dashboard.
+echo.
+echo   # Run migrations
+echo   php artisan migrate --force
+echo.
+echo   # Test database
+echo   php artisan tinker
+echo   DB::table('users')-^>count()
+echo.
+echo   # Clear cache
+echo   php artisan cache:clear
+echo.
+echo   # View logs
+echo   tail -f storage/logs/laravel.log
+echo.
+echo.
+echo UPDATING YOUR APP AFTER DEPLOYMENT
+echo ========================================
+echo.
+echo 1. Make changes locally
+echo 2. Test locally (npm run dev in one terminal, php artisan serve in another)
+echo 3. Commit changes:
+echo.
+echo    git add .
+echo    git commit -m "Your change description"
+echo    git push origin main
+echo.
+echo 4. Render automatically redeploys (takes ~2 minutes)
+echo 5. Check https://almka-blind.onrender.com for changes
+echo.
+echo.
+echo ========================================
+echo DEPLOYMENT COMPLETE! 🎉
+echo ========================================

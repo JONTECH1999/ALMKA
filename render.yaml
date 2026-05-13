@@ -1,0 +1,88 @@
+services:
+  - type: web
+    name: almka-blind
+    env: php
+    plan: free
+    region: oregon
+    
+    # Build command: Install dependencies and build frontend
+    buildCommand: >
+      composer install --no-dev --no-interaction &&
+      npm install &&
+      npm run build
+    
+    # Start command: Run migrations and start Laravel server
+    startCommand: >
+      php artisan migrate --force &&
+      php artisan storage:link &&
+      php artisan serve --host 0.0.0.0 --port $PORT
+    
+    # Environment variables for production
+    envVars:
+      - key: APP_NAME
+        value: ALMKA
+        
+      - key: APP_ENV
+        value: production
+        
+      - key: APP_DEBUG
+        value: false
+        
+      - key: APP_KEY
+        scope: web
+        sync: false
+        
+      - key: APP_URL
+        scope: web
+        sync: false
+        
+      - key: LOG_CHANNEL
+        value: stack
+        
+      - key: LOG_LEVEL
+        value: debug
+        
+      - key: DB_CONNECTION
+        value: pgsql
+        
+      - key: DB_HOST
+        scope: web
+        sync: false
+        
+      - key: DB_PORT
+        value: "5432"
+        
+      - key: DB_DATABASE
+        scope: web
+        sync: false
+        
+      - key: DB_USERNAME
+        scope: web
+        sync: false
+        
+      - key: DB_PASSWORD
+        scope: web
+        sync: false
+        
+      - key: CACHE_STORE
+        value: database
+        
+      - key: QUEUE_CONNECTION
+        value: database
+        
+      - key: SESSION_DRIVER
+        value: database
+        
+      - key: FILESYSTEM_DISK
+        value: local
+        
+      - key: VITE_API_BASE_URL
+        value: /api
+
+databases:
+  - name: almka-blind-db
+    databaseName: almka_blind
+    user: almka_user
+    plan: free
+    postgresSQLVersion: "15"
+    region: oregon
